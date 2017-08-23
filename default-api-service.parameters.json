@@ -1,0 +1,31 @@
+[
+
+  {
+    "ParameterKey": "Environment",
+    "ParameterValue": "${ENVIRONMENT}"
+  },
+  {
+    "ParameterKey": "DesiredCapacity",
+    "ParameterValue": "${DESIRED_CAPACITY}"
+  },
+  {
+    "ParameterKey": "ContainerImage",
+    "ParameterValue": "${IMAGE}"
+  },
+  {
+    "ParameterKey": "ClusterStack",
+    "ParameterValue": "${CLUSTER_STACK_NAME}"
+  },
+  {
+    "ParameterKey": "ContainerPort",
+    "ParameterValue": "${CONTAINER_PORT}"
+  },
+  {
+    "ParameterKey": "TaskMemory",
+    "ParameterValue": "${TASK_SOFT_MEMORY}"
+  },
+  {
+    "ParameterKey": "TaskCPU",
+    "ParameterValue": "${TASK_CPU}"
+  }
+]

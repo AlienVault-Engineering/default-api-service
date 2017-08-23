@@ -1,0 +1,22 @@
+{
+  "TASK_CPU": {
+    "type": "property",
+    "key": "TASK_CPU",
+    "default": 64
+  },
+  "DESIRED_CAPACITY": {
+    "type": "property",
+    "key": "DESIRED_CAPACITY",
+    "default": 1
+  },
+  "TASK_SOFT_MEMORY": {
+    "type": "property",
+    "key": "TASK_SOFT_MEMORY",
+    "default": 512
+  },
+  "CONTAINER_PORT": {
+    "type": "property",
+    "key": "CONTAINER_PORT",
+    "default": 5000
+  }
+}
