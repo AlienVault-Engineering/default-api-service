@@ -3,36 +3,32 @@
   "Description": "",
   "Parameters": {
     "Environment": {
-      "Description": "The environment parameter for the docker container",
+      "Description": "The environment this ECS service will be deployed in.",
       "Type": "String"
     },
     "DesiredCapacity": {
-      "Description": "Number of instances to launch in your ECS cluster - and number of containers to run of primary container",
-      "Type": "Number",
-      "Default": "2"
+      "Description": "Number of instances of the primary container",
+      "Type": "Number"
     },
     "ContainerImage": {
-      "Description": "Container image to use in the ECS task definition",
+      "Description": "Container image (fully qualified url) to use in the ECS task definition",
       "Type": "String"
     },
     "ClusterStack": {
-      "Description": "ECS Cluster stack name to deploy service into",
+      "Description": "Stack name of the ecs cluster the service will be deployed on.",
       "Type": "String"
     },
     "ContainerPort": {
-      "Description": "The port the API is published on",
-      "Type": "Number",
-      "Default": 5000
+      "Description": "The port on the container that will be wired to the Application ELB.",
+      "Type": "Number"
     },
     "TaskMemory": {
-      "Description": "The amount of memory for use by the task",
-      "Type": "Number",
-      "Default": 512
+      "Description": "The soft memory limit for the task.",
+      "Type": "Number"
     },
     "TaskCPU": {
       "Description": "The amount of cpu units (see ecs) for use by the task",
-      "Type": "Number",
-      "Default": 64
+      "Type": "Number"
     }
   },
   "Resources": {
@@ -77,13 +73,17 @@
         },
         "LoadBalancers": [
           {
-            "ContainerName":  {"Fn::Sub": "${AWS::StackName}" },
+            "ContainerName": {
+              "Fn::Sub": "${AWS::StackName}"
+            },
             "ContainerPort": {
               "Ref": "ContainerPort"
             },
-            "TargetGroupArn": {"Fn::ImportValue":{
-                        "Fn::Sub": "${ClusterStack}-DefaultTargetGroup"
-                      } }
+            "TargetGroupArn": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${ClusterStack}-DefaultTargetGroup"
+              }
+            }
           }
         ],
         "Role": {
@@ -97,7 +97,9 @@
     "TaskDefinition": {
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
-        "Family": {"Fn::Sub": "${AWS::StackName}-ECSTaskFamily" },
+        "Family": {
+          "Fn::Sub": "${AWS::StackName}-ECSTaskFamily"
+        },
         "ContainerDefinitions": [
           {
             "VolumesFrom": [],
@@ -106,7 +108,9 @@
             },
             "Essential": true,
             "MountPoints": [],
-            "Name": {"Fn::Sub": "${AWS::StackName}" },
+            "Name": {
+              "Fn::Sub": "${AWS::StackName}"
+            },
             "Environment": [
               {
                 "Name": "ENVIRONMENT",
@@ -153,7 +157,7 @@
   },
   "Outputs": {
     "ECSService": {
-      "Description": "The service name of the  contribution api",
+      "Description": "The ARN of the deployed ECS service.",
       "Value": {
         "Ref": "Service"
       },
@@ -164,13 +168,24 @@
       }
     },
     "ECSServiceName": {
-              "Description": "The service name of the  contribution api",
-              "Value": {"Fn::GetAtt":["Service","Name"]} ,
-              "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-ECSServiceName" }}
-            },
+      "Description": "The service name of the deployed ECS service.",
+      "Value": {
+        "Fn::GetAtt": [
+          "Service",
+          "Name"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-ECSServiceName"
+        }
+      }
+    },
     "ECSTaskFamily": {
-      "Description": "The task name of the  contribution api",
-      "Value":  {"Fn::Sub": "${AWS::StackName}-ECSTaskFamily" },
+      "Description": "The task family name of the deployed ECS service.",
+      "Value": {
+        "Fn::Sub": "${AWS::StackName}-ECSTaskFamily"
+      },
       "Export": {
         "Name": {
           "Fn::Sub": "${AWS::StackName}-ECSTaskFamily"
